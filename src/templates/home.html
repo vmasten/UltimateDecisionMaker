@@ -39,16 +39,10 @@
     {% if decision %}
     {% include "decision.html" %}
     {% endif %}
-    <!--
-    <input type="submit" value="Submit!" />
-    -->
-
 
 {% else %}
-  <!-- humm... why we need action = url for home here?-->
   <form class="special-form" action="{{url_for('home')}}" method="post" role="form">
     <div class="element-wrapper">
-        <!--<div class="row">-->
         <div class="form-group">
           <input class="form-control" type="text" placeholder="Your Choice" name="choice_1"/>
           <button class="btn-remove-row" name="remove_1">
@@ -58,9 +52,6 @@
     </div>
     <br>
     <button class="decision-button" type="submit" name="submit-button" value="decide-for-me">Decide for Me!</button>
-    <!--
-    <input type="submit" value="Submit!" />
-    -->
   </form>
 
 {% endif %}
@@ -76,31 +67,22 @@ var content_keys = {{ content_keys | safe }};
 var values = {{ values | safe }};
 
 var x = {{ values |length }};
-//console.log('scott was here', x);
 if (x == 0){
   x = 1;
 };
 
-// check grabbing keys
+// check that keys were properly grabbed
 for (i=0; i< content_keys.length ; i++){
   console.log("i == ", i);
   console.log("We have keys!:", content_keys[i]);
 };
 
-// generating initial choice_name array. this method is needed
-// bcz user may remove any choice_id and we need to make sure
-// no duplicate ones are used.
+// generates the initial choice_name array; if the user
+//removes a choice_id, this ensures no duplicates are used.
 var choice_names = Array();
 for (i=1; i<max_fields+1; i++){
   tmp = "choice_" + i
-  if (content_keys.includes(tmp)){
-    console.log(tmp, " already exists, pass.");
-  }
-  else{
-    choice_names.push(tmp);
-    console.log("Created choice name: choice_"+i);
   };
-};
 
 
 $(document).ready(function(){
@@ -119,19 +101,14 @@ $(document).ready(function(){
         }
     });
 
-    //user click on remove field
+    //user clicks on remove field
     $(wrapper).on("click",".btn-remove-row", function(e){
         e.preventDefault(); $(this).parent('div').remove(); x--;
         local_add_name = this.getAttribute('name').replace("remove","choice")
-        console.log("adding back the choice name", local_add_name);
-        console.log("choice name list = ", choice_names);
         choice_names.push(local_add_name);
     });
 });
 
-
 </script>
-
-
 
 {% endblock scripts %}
